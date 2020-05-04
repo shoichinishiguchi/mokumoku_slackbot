@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'slack-ruby-client'
+require_relative 'other_setting'
 
 Slack.configure do |conf|
   conf.token = ENV['MOKUMOKU_BOT_TOKEN']
@@ -30,6 +31,7 @@ client.on :message do |data|
                    text: "もくもくカウントは #{mokumoku_count} 回です。"
   end
 end
+ura_setting(client)
 
 # Bot start
 client.start!
