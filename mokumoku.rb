@@ -13,22 +13,28 @@ client = Slack::RealTime::Client.new
 # slackに接続できたときの処理
 client.on :hello do
   puts 'connected!'
-  client.message channel: 'C0135C2JS0L', text: 'connected!'
+  client.message channel: ENV['EXPERIMENT_CHANNEL'], text: 'connected!'
 end
 mokumoku_count = 0
 
 # ユーザからのメッセージを検知したときの処理
 client.on :message do |data|
   mokumoku_count += 1 if data.text&.match(/もくもく/)
-  if data.text&.match(/もくもく(はじめ|開始|始め|再開|スタート)/)
-    client.message channel: data['channel'], text: "<@#{data.user}>, もくもく頑張ってね！"
-  end
-  if data.text&.match(/もくもく(終わり|おわり|終了|エンド)/)
-    client.message channel: data['channel'], text: "<@#{data.user}>, もくもくお疲れ様"
+  if data.text&.match(/もくもく.*(終わり|おわり|終了|エンド|した)/)
+    client.message channel: data['channel'], text: "<@#{data.user}>\nもくもくお疲れ様:relaxed:"
+  elsif data.text&.match(/もくもく.*(はじめ|開始|始め|再開|スタート|します|!)?/)
+    client.message channel: data['channel'], text: "<@#{data.user}>\nすごい！もくもく頑張ってね！:clap:"
   end
   if data.text&.match(/何もくもく?/)
     client.message channel: data['channel'],
                    text: "もくもくカウントは #{mokumoku_count} 回です。"
+  end
+  if data.text&.match(/もくもくカウントは/) && data.user == ENV['MOKUMOKU_ADMIN']
+    mokumoku_count = data.text.match(/\d+/)[0].to_i
+  end
+  if data.text&.match(/バルス/)
+    client.message channel: data['channel'], text: 'もくもくカウントが壊れて0になりました。:cry:'
+    mokumoku_count = 0
   end
 end
 ura_setting(client)
