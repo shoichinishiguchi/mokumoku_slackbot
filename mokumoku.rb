@@ -19,15 +19,14 @@ mokumoku_count = 0
 
 # ユーザからのメッセージを検知したときの処理
 client.on :message do |data|
-  mokumoku_count += 1 if data.text&.match(/もくもく/)
   if data.text&.match(/もくもく.*(終わり|おわり|終了|エンド|した)/)
     client.message channel: data['channel'], text: "<@#{data.user}>\nもくもくお疲れ様:relaxed:"
-  elsif data.text&.match(/もくもく.*(はじめ|開始|始め|再開|スタート|します|!)?/)
-    client.message channel: data['channel'], text: "<@#{data.user}>\nすごい！もくもく頑張ってね！:clap:"
-  end
-  if data.text&.match(/何もくもく?/)
+  elsif data.text&.match(/今、何もくもく\?/)
     client.message channel: data['channel'],
                    text: "もくもくカウントは #{mokumoku_count} 回です。"
+  elsif data.text&.match(/もくもく.*(はじめ|開始|始め|再開|スタート|します|!)?/)
+    mokumoku_count += 1
+    client.message channel: data['channel'], text: "<@#{data.user}>\nすごい！もくもく頑張ってね！:clap:"
   end
   if data.text&.match(/もくもくカウントは/) && data.user == ENV['MOKUMOKU_ADMIN']
     mokumoku_count = data.text.match(/\d+/)[0].to_i
