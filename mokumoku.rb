@@ -23,7 +23,7 @@ client.on :message do |data|
     client.message channel: data['channel'], text: "<@#{data.user}>\nもくもくお疲れ様:relaxed:"
   elsif data.text&.match(/今、何もくもく\?/)
     client.message channel: data['channel'],
-                   text: "もくもくカウントは #{mokumoku_count} 回です。"
+                   text: "今日までのもくもくカウントは合計 #{mokumoku_count} 回です。また、明日も頑張りましょう！"
   elsif data.text&.match(/もくもく.*(はじめ|開始|始め|再開|スタート|します|!)?/)
     mokumoku_count += 1
     client.message channel: data['channel'], text: "<@#{data.user}>\nすごい！もくもく頑張ってね！:clap:"
