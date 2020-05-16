@@ -26,7 +26,11 @@ client.on :message do |data|
                    text: "今日までのもくもく:mokumokubot:カウントは合計 #{mokumoku_count} 回です:clap:\nまた、明日も頑張りましょう:exclamation::female-technologist::male-technologist:"
   elsif data.text&.match(/もくもく.*(はじめ|開始|始め|再開|スタート|します|!)?/)
     mokumoku_count += 1
-    client.message channel: data['channel'], text: "<@#{data.user}>\nすごい！もくもく頑張ってね！:clap:"
+    if mokumoku_count % 100 == 0
+      client.message channel: data['channel'], text: ":tada::tada:<@#{data.user}>:tada::tada:\nおめでとうございます。あなたで、\nちょうど:congratulations: #{mokumoku_count}回目:congratulations: のもくもくです。すごい！!\n:mokumokubot: :mokumokubot: みなさん、これからもよろしくもくもくおねがいします！:mokumokubot::mokumokubot: "
+    else
+      client.message channel: data['channel'], text: "<@#{data.user}>\nすごい！もくもく頑張ってね！:clap:"
+    end
   end
   if data.text&.match(/もくもくカウントは/) && data.user == ENV['MOKUMOKU_ADMIN']
     mokumoku_count = data.text.match(/\d+/)[0].to_i
