@@ -11,19 +11,6 @@ Aws.config.update({
                     credentials: Aws::Credentials.new(akid, secret)
                   })
 
-def mokumoku_count_save_on_s3(_mokumoku_count)
-  s3 = Aws::S3::Resource.new
-  bucket = s3.bucket('mokumoku-bot-count')
-
-  new_mokumoku_count =
-    [bucket.object('mokumoku-bot-count/mokumoku_count.txt').get.body.read.to_i, new_mokumoku_count].max
-
-  mokumoku_count_up_and_local_save(new_mokumoku_count)
-
-  bucket.object('mokumoku-bot-count/mokumoku_count.txt')
-  bucket.put_object(key: 'mokumoku-bot-count/mokumoku_count.txt', body: File.open('mokumoku_count.txt'))
-end
-
 def s3_mokumoku_count
   s3 = Aws::S3::Resource.new
   bucket = s3.bucket('mokumoku-bot-count')
