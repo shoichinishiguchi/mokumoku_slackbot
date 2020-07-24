@@ -11,32 +11,39 @@ Aws.config.update({
                     credentials: Aws::Credentials.new(akid, secret)
                   })
 
-def mokumoku_count_save_on_s3(mokumoku_count)
+def mokumoku_count_save_on_s3(_mokumoku_count)
   s3 = Aws::S3::Resource.new
   bucket = s3.bucket('mokumoku-bot-count')
 
-  mokumoku_count =
-    [bucket.object('mokumoku-bot-count/mokumoku_count.txt').get.body.read.to_i, mokumoku_count].max
+  new_mokumoku_count =
+    [bucket.object('mokumoku-bot-count/mokumoku_count.txt').get.body.read.to_i, new_mokumoku_count].max
 
-  mokumoku_count_up_and_local_save(mokumoku_count)
+  mokumoku_count_up_and_local_save(new_mokumoku_count)
 
   bucket.object('mokumoku-bot-count/mokumoku_count.txt')
   bucket.put_object(key: 'mokumoku-bot-count/mokumoku_count.txt', body: File.open('mokumoku_count.txt'))
 end
 
-def mokumoku_count_up_and_local_save(mokumoku_count, file = 'mokumoku_count.txt')
-  count = mokumoku_count
+def s3_mokumoku_count
+  s3 = Aws::S3::Resource.new
+  bucket = s3.bucket('mokumoku-bot-count')
 
-  File.open file, File::TRUNC | File::RDWR do |f|
-    f.print count.to_s
-  end
+  bucket.object('mokumoku-bot-count/mokumoku_count.txt').get.body.read.to_i
+end
 
-  File.open file, File::RDONLY do |f|
-    count = f.read.to_i + 1
-  end
+def s3_mokumoku_count_save(mokumoku_count)
+  s3 = Aws::S3::Resource.new
+  bucket = s3.bucket('mokumoku-bot-count')
 
-  File.open file, File::TRUNC | File::RDWR do |f|
-    f.print count.to_s
-  end
-  count
+  bucket.object('mokumoku-bot-count/mokumoku_count.txt')
+  bucket.put_object(key: 'mokumoku-bot-count/mokumoku_count.txt',
+                    body: mokumoku_count.to_s)
+end
+
+def s3_mokumoku_count_up_and_return
+  up_count = s3_mokumoku_count + 1
+
+  s3_mokumoku_count_save(up_count)
+
+  up_count
 end

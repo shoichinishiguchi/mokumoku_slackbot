@@ -21,7 +21,7 @@ client.on :hello do
   puts 'connected!'
   client.message channel: 'C0135C2JS0L', text: 'connected!'
 end
-mokumoku_count = 0
+mokumoku_count = s3_mokumoku_count
 
 # ユーザからのメッセージを検知したときの処理(もくもく宣言関連のみ)
 client.on :message do |data|
@@ -32,7 +32,7 @@ client.on :message do |data|
       client.message channel: data['channel'],
                      text: "今日までのもくもく:mokumokubot:カウントは合計 #{mokumoku_count} 回です:clap:\nまた、明日も頑張りましょう:exclamation::female-technologist::male-technologist:"
     elsif data.text&.match(/もくもく.*(はじめ|開始|始め|再開|スタート|します|!)?/)
-      mokumoku_count = mokumoku_count_up_and_save(mokumoku_count)
+      mokumoku_count = s3_mokumoku_count_up_and_return
       if mokumoku_count % 100 == 0
         client.message channel: data['channel'], text: ":tada::tada:<@#{data.user}>:tada::tada:\nおめでとうございます。あなたで、\nちょうど:congratulations: #{mokumoku_count}回目:congratulations: のもくもくです。すごい！!\n:mokumokubot: :mokumokubot: みなさん、これからもよろしくもくもくおねがいします！:mokumokubot::mokumokubot: "
       else
@@ -42,6 +42,7 @@ client.on :message do |data|
 
     if data.text&.match(/もくもくカウントは/) && data.user == ENV['MOKUMOKU_ADMIN']
       mokumoku_count = data.text.match(/\d+/)[0].to_i
+      s3_mokumoku_count_save(mokumoku_count)
     end
     if data.text&.match(/^バルス$/)
       client.message channel: data['channel'], text: 'もくもくカウントが壊れて0になりました。:cry:'
