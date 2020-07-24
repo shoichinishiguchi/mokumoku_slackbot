@@ -2,6 +2,7 @@
 
 require 'slack-ruby-client'
 require_relative 'other_setting'
+require_relative 's3_count_save'
 require_relative 'children_channel'
 
 Slack.configure do |conf|
