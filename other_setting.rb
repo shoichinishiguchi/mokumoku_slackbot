@@ -12,6 +12,10 @@ end
 def mokumoku_count_up_and_save(mokumoku_count)
   count = mokumoku_count
 
+  File.open 'mokumoku_count.txt', File::TRUNC | File::RDWR do |f|
+    f.print count.to_s
+  end
+
   File.open 'mokumoku_count.txt', File::RDONLY do |f|
     count = f.read.to_i + 1
   end
