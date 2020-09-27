@@ -60,7 +60,7 @@ client.on :message do |data|
       elsif mokumoku_count % 100 == 0
         client.message channel: data['channel'], text: ":tada::tada:<@#{data.user}>:tada::tada:\nおめでとうございます。あなたで、\nちょうど:congratulations: #{mokumoku_count}回目:congratulations: のもくもくです。すごい！!\n:mokumokubot: :mokumokubot: みなさん、これからもよろしくもくもくおねがいします！:mokumokubot::mokumokubot: "
       elsif KIRIBAN.include?(mokumoku_count)
-        client.message channel: data['channel'], text: "キリ番ゲット!:sunglasses:\nちょうど:confetti_ball: 777回目:confetti_ball: のもくもく:mokumokubot: です！\n<@#{data.user}>もくもく頑張ってね！:mokumokubot::clap:"
+        client.message channel: data['channel'], text: "キリ番ゲット!:sunglasses:\nちょうど:confetti_ball: #{mokumoku_count}回目:confetti_ball: のもくもく:mokumokubot: です！\n<@#{data.user}>もくもく頑張ってね！:mokumokubot::clap:"
       else
         client.message channel: data['channel'], text: "<@#{data.user}>\nすごい！もくもく頑張ってね！:clap:"
       end
