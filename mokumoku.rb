@@ -51,7 +51,7 @@ client.on :message do |data|
       client.message channel: data['channel'], text: "<@#{data.user}>\nもくもくお疲れ様:relaxed:"
     elsif data.text&.match(/今、何もくもく\?/)
       client.message channel: data['channel'],
-                     text: "今日までのもくもく:mokumokubot:カウントは合計 #{mokumoku_count} 回です:clap:\nまた、明日も頑張りましょう:exclamation::female-technologist::male-technologist:"
+                     text: "今日までのもくもく:mokumokubot:カウントは合計 #{mokumoku_count} 回です:clap:\nまた、来週も頑張りましょう:exclamation::female-technologist::male-technologist:"
     elsif data.text&.match(/もくもく.*(はじめ|開始|始め|再開|スタート|します|!)?/)
       mokumoku_count = s3_mokumoku_count_up_and_return
 
