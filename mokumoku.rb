@@ -47,7 +47,7 @@ mokumoku_count = s3_mokumoku_count
 # ユーザからのメッセージを検知したときの処理(もくもく宣言関連のみ)
 client.on :message do |data|
   if MOKUMOKU_CHANNELS.include?(data.channel)
-    if data.text&.match(/もくもく.*(終わり|おわり|終了|エンド|した)/)
+    if data.text&.match(/もくもく.*(終わり|おわり|終了|エンド)/)
       client.message channel: data['channel'], text: "<@#{data.user}>\nもくもくお疲れ様:relaxed:"
     elsif data.text&.match(/今、何もくもく\?/)
       client.message channel: data['channel'],
