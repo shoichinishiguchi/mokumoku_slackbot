@@ -40,7 +40,7 @@ client = Slack::RealTime::Client.new
 # slackに接続できたときの処理
 client.on :hello do
   puts 'connected!'
-  client.message channel: 'C0135C2JS0L', text: 'connected!'
+  # client.message channel: 'C0135C2JS0L', text: 'connected!'
 end
 mokumoku_count = s3_mokumoku_count
 
